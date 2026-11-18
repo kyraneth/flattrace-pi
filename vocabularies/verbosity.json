@@ -1,0 +1,19 @@
+{
+  "tool": "flattrace-pi-verbosity",
+  "events": {
+    "action": {
+      "kind": "point",
+      "level": 2,
+      "fields": {
+        "toolCallId": "Native call ID, including nested <parent>/<n> IDs",
+        "parentToolCallId": "Enclosing native call ID or null",
+        "toolName": "Registered tool name",
+        "kind": "read/edit/write/exec/net/send for the named versioned allowlist of built-in tools; null for anything else, never a guess",
+        "allowlistVersion": "Pi version the built-in tool allowlist was written against (text)",
+        "argv": "Sanitized scalar argument strings; never credentials, never free-text bodies",
+        "withheldParams": "Free-text parameter names deliberately excluded from argv (command/content/text/prompt/message and the like)",
+        "redactionNote": "Which redaction applied: writer sanitizeArgv plus tool-specific scalar filtering"
+      }
+    }
+  }
+}

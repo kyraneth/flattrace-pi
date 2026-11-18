@@ -1,0 +1,7 @@
+{
+  "name": "proof-second",
+  "version": "0.1.0",
+  "description": "Proof-only second vocabulary for the flattrace-pi extension point",
+  "license": "MIT",
+  "type": "module"
+}

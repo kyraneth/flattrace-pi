@@ -1,0 +1,16 @@
+{
+  "tool": "proof-child",
+  "events": {
+    "run": {
+      "kind": "span",
+      "fields": {}
+    },
+    "proofchild.work": {
+      "kind": "span",
+      "fields": {
+        "parentSpan": "Inherited parent span id from FLATTRACE_TRACEPARENT (text)",
+        "parentTrace": "Inherited trace id (text)"
+      }
+    }
+  }
+}

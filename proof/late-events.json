@@ -1,0 +1,11 @@
+{
+  "tool": "proof-late",
+  "events": {
+    "prooflate.note": {
+      "kind": "point",
+      "fields": {
+        "where": "Never emitted; registration is attempted after open and refused (text)"
+      }
+    }
+  }
+}

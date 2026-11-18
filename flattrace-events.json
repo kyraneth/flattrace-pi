@@ -1,0 +1,375 @@
+{
+  "tool": "flattrace-pi",
+  "events": {
+    "run": {
+      "kind": "span",
+      "fields": {}
+    },
+    "pi.trace.undeclared": {
+      "kind": "point",
+      "fields": {
+        "event": "Undeclared event name refused without writing a span or point for that name",
+        "api": "Public caller: beginSpan, withSpan or emitPoint; once per (event, api) per run"
+      }
+    },
+    "pi.agent": {
+      "kind": "span",
+      "fields": {
+        "sessionId": "Native session ID",
+        "previousAgentSpanId": "Previous settled activity span ID or null, not inferred retry",
+        "startSource": "Admitted before_agent_start or agent_start fallback; closes at agent_settled, not low-level agent_end",
+        "messageType": "user/custom or null",
+        "inputIndex": "Nearest observed idle input ordinal or null",
+        "inputToAgentStartMs": "Observed idle-input to admission (ms) or null",
+        "inputCorrelation": "No native admitted-input ID; explicit nearest-input/fallback limitation",
+        "aborted": "Native settled abort flag",
+        "summary": "Activity summary, same units and scopes as run.summary but for this admitted activity only",
+        "process": "This Node process residence during the activity; same units, scopes and null fields as run.process"
+      }
+    },
+    "pi.input": {
+      "kind": "point",
+      "fields": {
+        "inputIndex": "Observed process input ordinal (count)",
+        "source": "Native interactive/rpc/extension source",
+        "streamingBehavior": "Native steer/followUp or null",
+        "duringActivity": "Input observed during an admitted activity",
+        "imageCount": "Attached image count or null; data excluded"
+      }
+    },
+    "pi.agent.loop": {
+      "kind": "point",
+      "fields": {
+        "phase": "start/end",
+        "loopIndex": "Low-level loop ordinal in logical activity (count)",
+        "outcome": "Local normalized outcome on end",
+        "messageCount": "Native messages array count; body excluded"
+      }
+    },
+    "pi.agent.options": {
+      "kind": "point",
+      "fields": {
+        "selectedTools": "Names selected after opted-in before_agent_start handlers; actual applied inventory refreshed at turn_start",
+        "hiddenTools": "Hidden tool names or null; prompt option bodies excluded"
+      }
+    },
+    "pi.agent.settle": {
+      "kind": "point",
+      "fields": {
+        "nativeOutcome": "completed/aborted/error or null",
+        "continued": "Native continuation flag",
+        "draftEntryCount": "Boundary draft entries count; bodies/context preview excluded"
+      }
+    },
+    "pi.turn": {
+      "kind": "span",
+      "fields": {
+        "sessionId": "Native session ID",
+        "turnIndex": "Index within low-level loop (count)",
+        "agentLoopIndex": "Low-level loop ordinal (count) or null",
+        "nativeTimestampMs": "Native timestamp (Unix ms); no elapsed calculation from it",
+        "provider": "Selected provider ID",
+        "model": "Selected model ID",
+        "api": "Native API ID",
+        "thinkingLevel": "Requested Pi effort",
+        "contextWindowTokens": "Native catalog context window (tokens)",
+        "catalogMaxOutputTokens": "Native catalog output cap (tokens)",
+        "entryId": "Persisted native assistant entry ID",
+        "toolResultEntryIds": "Exact persisted tool-result entry IDs",
+        "stopReason": "Normalized stop reason or null",
+        "nativeOutcome": "Native completed/aborted/error or null",
+        "continued": "Native continuation flag or null",
+        "draftEntryCount": "Draft entries count or null; bodies excluded",
+        "process": "This Node process residence during the turn; same units, scopes and null fields as run.process"
+      }
+    },
+    "pi.model": {
+      "kind": "span",
+      "fields": {
+        "sessionId": "Native session ID (unitless)",
+        "requestIndex": "Request ordinal within turn/compaction (count)",
+        "hookRequestIndex": "Process hook/fallback request ordinal (count; not a provider retry index)",
+        "startSource": "before_provider_request or message_start fallback; fallback excludes unobserved request latency",
+        "provider": "Selected at start / reported on end provider ID or null",
+        "model": "Selected at start / reported on end model ID or null",
+        "api": "Native provider API ID or null",
+        "thinkingLevel": "Selected/requested Pi effort or reported end effort, null if unknown",
+        "contextWindowTokens": "Reported native catalog context window (tokens), not a recorder limit",
+        "catalogMaxOutputTokens": "Reported native catalog output cap (tokens), not a recorder limit",
+        "payloadModel": "Selected scalar request payload.model or null; body excluded",
+        "requestMessageCount": "Request messages count when exposed",
+        "requestToolCount": "Request tools count when exposed",
+        "requestedMaxTokens": "Observed provider payload max_tokens/max_output_tokens/max_completion_tokens (tokens), not a recorder limit",
+        "payloadReasoningEffort": "Observed scalar provider reasoning effort or null",
+        "payloadThinkingType": "adaptive/enabled/disabled or null",
+        "payloadThinkingBudgetTokens": "Observed provider thinking budget (tokens), not a recorder limit",
+        "streaming": "Observed request stream flag or null",
+        "responseModel": "Reported physical response model or null",
+        "providerThinkingLevel": "Reported native provider effort or null",
+        "stopReason": "Normalized native stop reason or null",
+        "endTurn": "Provider end-turn flag or null",
+        "diagnosticCount": "Diagnostics count; entries/prose excluded",
+        "nativeTimestampMs": "Native request timestamp (Unix ms), never used to calculate elapsed duration",
+        "responseIdPresent": "Presence only; opaque provider ID value excluded",
+        "errorMessagePresent": "Presence only; error prose excluded",
+        "deferredPresent": "Presence of deferred provider handle; opaque token/data excluded",
+        "deferredExpiresAtMs": "Provider reported deferred expiry (Unix ms) or null",
+        "deferredPollAfterMs": "Reported provider polling hint (ms), not a timer/budget",
+        "httpStatus": "Last exposed HTTP response status or null",
+        "firstDeltaMs": "First nonempty normalized text/thinking/toolcall delta since observed request (ms); TTFT proxy, not server token production",
+        "firstDeltaKind": "text_delta/thinking_delta/toolcall_delta or null",
+        "firstTokenMs": "First nonempty normalized message_update content (start/delta/end) since request (ms); TTFT proxy, null when unavailable",
+        "firstTokenKind": "Normalized event type yielding first content or null; may precede firstDeltaMs",
+        "nativeDurationMs": "Native monotonic response duration (ms) or null",
+        "normalizedEventCounts": "Normalized event-type counts only; no stream/delta/partial content",
+        "observedResponseCount": "after_provider_response callback count",
+        "exposedHttpAttemptCount": "Count of exposed HTTP response attempts only, not complete physical attempt count",
+        "observedFailedResponses": "Exposed 4xx/5xx responses (count)",
+        "providerAttemptCount": "Unavailable total physical attempts: null",
+        "providerRetryCount": "Unavailable total transport retries: null",
+        "requestHeadersObserved": "Request-headers callback observed (boolean)",
+        "requestHeaderCount": "Request-header count or null; names/values excluded",
+        "providerStreamEventCount": "Raw provider callback count; raw data never inspected/emitted",
+        "streamProvider": "Exposed physical stream provider ID or null",
+        "streamApi": "Exposed stream API ID or null",
+        "streamModel": "Exposed stream model ID or null",
+        "errorKind": "Stable local provider.error/cancelled/http.client_error/http.server_error or null; no error prose",
+        "superseded": "Superseding request observed; not inferred retry/success",
+        "correlation": "Current observed request; native callbacks expose no request ID",
+        "retryCoverage": "Explicit adapter/transport visibility limit",
+        "inputTokens": "Reported inputTokens (tokens) or null; reasoning/cacheWrite1h are subsets.",
+        "outputTokens": "Reported outputTokens (tokens) or null; reasoning/cacheWrite1h are subsets.",
+        "cacheReadTokens": "Reported cacheReadTokens (tokens) or null; reasoning/cacheWrite1h are subsets.",
+        "cacheWriteTokens": "Reported cacheWriteTokens (tokens) or null; reasoning/cacheWrite1h are subsets.",
+        "cacheWrite1hTokens": "Reported cacheWrite1hTokens (tokens) or null; reasoning/cacheWrite1h are subsets.",
+        "reasoningTokens": "Reported reasoningTokens (tokens) or null; reasoning/cacheWrite1h are subsets.",
+        "totalTokens": "Reported totalTokens (tokens) or null; reasoning/cacheWrite1h are subsets.",
+        "costInput": "Reported catalog-estimated costInput (USD) or null; not a billed amount.",
+        "costOutput": "Reported catalog-estimated costOutput (USD) or null; not a billed amount.",
+        "costCacheRead": "Reported catalog-estimated costCacheRead (USD) or null; not a billed amount.",
+        "costCacheWrite": "Reported catalog-estimated costCacheWrite (USD) or null; not a billed amount.",
+        "costTotal": "Reported catalog-estimated costTotal (USD) or null; not a billed amount."
+      }
+    },
+    "pi.model.headers": {
+      "kind": "point",
+      "fields": {
+        "sinceRequestMs": "Local elapsed since observed request (ms), not TTFT",
+        "headerCount": "Header count; all names/values excluded",
+        "hookRequestIndex": "Process observed request ordinal or absent if orphaned",
+        "unjoined": "No native turn/compaction owner",
+        "orphaned": "No current request observed"
+      }
+    },
+    "pi.model.response": {
+      "kind": "point",
+      "fields": {
+        "httpStatus": "Exposed HTTP status",
+        "errorKind": "Stable local HTTP class or null",
+        "hookRequestIndex": "Process observed request ordinal when available",
+        "unjoined": "No native turn/compaction owner",
+        "orphaned": "No current request observed",
+        "observedResponseIndex": "Exposed response ordinal within current observed request (count)",
+        "sinceRequestMs": "Local response-headers latency (ms), not TTFT",
+        "responseHeaderCount": "Header count only",
+        "retryAfterSeconds": "Parsed RFC9110 server Retry-After delay (s) when safe integer; not an actual retry",
+        "retryAfterHttpDatePresent": "Valid HTTP-date Retry-After hint present (boolean); value excluded"
+      }
+    },
+    "pi.model.first_token": {
+      "kind": "point",
+      "fields": {
+        "sinceRequestMs": "Local elapsed since observed request (ms); first nonempty normalized content delta",
+        "eventKind": "Normalized start/delta/end event type yielding first nonempty content",
+        "contentKind": "text/thinking/toolcall; content itself excluded",
+        "contentIndex": "Native normalized content part index (count) or null",
+        "measurement": "Explicit TTFT-proxy caveat; no content"
+      }
+    },
+    "pi.model.unjoined": {
+      "kind": "point",
+      "fields": {
+        "sessionId": "Native session ID (unitless)",
+        "requestIndex": "Request ordinal within turn/compaction (count)",
+        "hookRequestIndex": "Process hook/fallback request ordinal (count; not a provider retry index)",
+        "startSource": "before_provider_request or message_start fallback; fallback excludes unobserved request latency",
+        "provider": "Selected at start / reported on end provider ID or null",
+        "model": "Selected at start / reported on end model ID or null",
+        "api": "Native provider API ID or null",
+        "thinkingLevel": "Selected/requested Pi effort or reported end effort, null if unknown",
+        "contextWindowTokens": "Reported native catalog context window (tokens), not a recorder limit",
+        "catalogMaxOutputTokens": "Reported native catalog output cap (tokens), not a recorder limit",
+        "payloadModel": "Selected scalar request payload.model or null; body excluded",
+        "requestMessageCount": "Request messages count when exposed",
+        "requestToolCount": "Request tools count when exposed",
+        "requestedMaxTokens": "Observed provider payload max_tokens/max_output_tokens/max_completion_tokens (tokens), not a recorder limit",
+        "payloadReasoningEffort": "Observed scalar provider reasoning effort or null",
+        "payloadThinkingType": "adaptive/enabled/disabled or null",
+        "payloadThinkingBudgetTokens": "Observed provider thinking budget (tokens), not a recorder limit",
+        "streaming": "Observed request stream flag or null",
+        "phase": "request/observation_boundary; no invented model span or completion",
+        "boundary": "next_request/normalized_boundary/shutdown",
+        "completionObserved": "false; native lifetime completion unavailable",
+        "providerDurationMs": "null: no fabricated duration",
+        "reason": "Stable explanation of native visibility gap",
+        "observedResponseCount": "after_provider_response callback count",
+        "providerStreamEventCount": "Raw provider callback count; raw data never inspected/emitted"
+      }
+    },
+    "pi.message": {
+      "kind": "point",
+      "fields": {
+        "phase": "start/end",
+        "role": "Native message role",
+        "nativeTimestampMs": "Native timestamp (Unix ms), not an elapsed duration",
+        "toolCallId": "Native result call ID or null; all content excluded"
+      }
+    },
+    "pi.tool": {
+      "kind": "span",
+      "fields": {
+        "sessionId": "Native session ID",
+        "toolCallId": "Native call ID",
+        "parentToolCallId": "Native enclosing call ID or null",
+        "parentSpanUnavailable": "Native enclosing call exists but no uniquely identifiable live parent span (boolean); never invent a hard parent edge",
+        "turnSpanId": "Owning observed turn span ID or null, including late nested calls whose turn already ended",
+        "toolName": "Registered tool name",
+        "extension": "Source-matched entry or committed package identity; null when unavailable (not a universal handler-timing claim)",
+        "extensionVersion": "Reported owner version or null",
+        "exposure": "Native direct/model-only/codemode/deferred/hidden or null",
+        "isError": "Native final error flag",
+        "errorKind": "tool.error or null; result/error prose excluded",
+        "nativeDurationMs": "Native execute-only time (ms), null if not executed; envelope took_ms is full observed call/hook residence",
+        "firstUpdateMs": "First partial-update latency (ms) or null",
+        "updateCount": "Partial update count; no partial data",
+        "truncated": "Model-facing truncation flag from details or null; NOT structured-output cap",
+        "structuredTruncated": "Separate structured-output cap flag or null (native bash can differ)",
+        "originalBytes": "Original bytes when exposed, otherwise null",
+        "originalLines": "Original lines when exposed, otherwise null",
+        "outputBytes": "Returned bytes when exposed, otherwise null",
+        "outputLines": "Returned lines when exposed, otherwise null",
+        "truncatedBy": "bytes/lines/null",
+        "firstLineExceedsLimit": "Native flag or null",
+        "lastLinePartial": "Native flag or null",
+        "appliedMaxBytes": "Observed native tool truncation bound (bytes), not a recorder limit",
+        "appliedMaxLines": "Observed native tool truncation bound (lines), not a recorder limit",
+        "matchLimitReached": "Native search result limit reached (count) or null",
+        "linesTruncated": "Native grep line truncation flag or null",
+        "resultLimitReached": "Native find result bound reached (count) or null",
+        "entryLimitReached": "Native ls result bound reached (count) or null",
+        "fullOutputPathPresent": "Presence only in returned metadata; never its value",
+        "exitCode": "Returned structured exit code or null; a launch receipt code is NOT command completion",
+        "toolReportedWallSeconds": "Returned tool wall time (s) or null; launch/result scope explicit",
+        "exitCodeScope": "Meaning of returned exit code",
+        "metadataScope": "Truncation-layer/absence/privacy caveats",
+        "reportedUsage": "Usage: input/output/cacheRead/cacheWrite/cacheWrite1h/reasoning/totalTokens are token counts (1h/reasoning are subsets, never additive again); costInput/costOutput/costCacheRead/costCacheWrite/costTotal are catalog-estimated USD, not bills. Unknown is null; observations.reported/missing are counts and knownSubtotal retains the known partial amount.",
+        "terminated": "Native result terminate flag or null",
+        "process": "This Node process residence during the call; same units, scopes and null fields as run.process"
+      }
+    },
+    "pi.tool.unstarted": {
+      "kind": "point",
+      "fields": {
+        "toolCallId": "Native call ID",
+        "parentToolCallId": "Enclosing native call ID or null",
+        "toolName": "Reported tool name",
+        "isError": "Native error flag",
+        "nativeDurationMs": "Native execution time (ms) or null",
+        "reason": "End without observed start: no fabricated span/duration",
+        "truncated": "Selected model truncation metadata or null",
+        "fullOutputPathPresent": "Presence only; value excluded"
+      }
+    },
+    "pi.inventory": {
+      "kind": "point",
+      "fields": {
+        "extensions": "Declared entry labels/versions plus discovered committed package identities; active=true requires native activation or an actual matching tool/command, null is unproven; instrumented=true means opt-in timing, false means package-only discovery",
+        "tools": "Actual native names/exposures/declared-to-model active flags (null if API unavailable), source-matched entry or discovered package owner/version, sourceKind/sourceScope/sourceOrigin. Deferred/codemode may be callable while not declared. Schemas/descriptions/paths excluded.",
+        "coverage": "Explicit source-discovery/opt-in scope and limit: no complete native committed-extension API; a handler-only package that registers no tool or command remains unavailable; non-opted callbacks untimed",
+        "availability": "Native inventory API returned arrays: tools/activeTools/commands booleans. Missing APIs are not interpreted as zero tools or inactive."
+      }
+    },
+    "pi.resources": {
+      "kind": "point",
+      "fields": {
+        "reason": "Native startup/reload resource discovery reason"
+      }
+    },
+    "pi.ext": {
+      "kind": "point",
+      "fields": {
+        "partial": "Final-window or explicitly partial lifecycle flush flag; startup/replacement flushes are not mislabelled as full windows",
+        "nominalWindowMs": "Always null: this recorder runs no sampler, so there is no window length; elapsed span time is the envelope took_ms",
+        "boundary": "Explicit lifecycle flush label (session_start, agent_settled, session_shutdown) or null",
+        "handlers": "Callbacks completed since prior flush: extension/version/event/handler + active toolSpanId/native toolCallId when available; errors count; took_ms {unit:'ms', n count, p50/p95/max/total ms} (nearest-rank). Full async residence, straddlers credited at completion; not exclusive CPU or elapsed sum.",
+        "scope": "Opted-in callbacks only; native/bus/command/shortcut/tool preparation/execution/registered-renderer construction, not later render methods. Recorder observers excluded."
+      }
+    },
+    "pi.journal": {
+      "kind": "point",
+      "fields": {
+        "spanId": "Ended model/tool span ID, or the enclosing agent span for a user-entry join",
+        "entryId": "Exact persisted native assistant/tool-result/compaction/user entry ID",
+        "role": "Message role for this join (user for the admitted-prompt join); absent on model/tool/compaction joins",
+        "assistantEntryId": "Turn assistant entry ID when applicable",
+        "toolCallId": "Native call ID when applicable; nested calls join the outer result entry",
+        "parentToolCallId": "Enclosing native call ID or null"
+      }
+    },
+    "pi.compaction.unstarted": {
+      "kind": "point",
+      "fields": {
+        "phase": "failed or complete without an observed preparation/start boundary",
+        "entryId": "Native compaction entry ID if complete; unitless",
+        "reason": "Native manual/threshold/overflow reason",
+        "aborted": "Native abort flag when failed",
+        "willRetry": "Native retry flag, not an inferred provider retry count",
+        "fromExtension": "Native extension-origin flag",
+        "errorKind": "Stable cancelled/compaction.error classification; no error prose",
+        "usage": "Same nullable token-count/catalog-estimated USD fields as pi.model; no unknown zero filling",
+        "nativeDurationMs": "null: no start boundary, so no invented elapsed duration",
+        "observation": "Explicit missing-start scope; unrelated provider work is untouched"
+      }
+    },
+    "pi.compaction": {
+      "kind": "span",
+      "fields": {
+        "sessionId": "Native session ID",
+        "reason": "manual/threshold/overflow",
+        "willRetry": "Native retry flag",
+        "entryId": "Exact compaction entry ID on success",
+        "aborted": "Failure cancellation flag",
+        "fromExtension": "Native from-extension flag",
+        "fromHook": "Native entry fromHook flag or null",
+        "tokensBefore": "Native context tokens before compaction (tokens) or null",
+        "isSplitTurn": "Native preparation split-turn flag or null",
+        "firstKeptEntryId": "Native retention boundary ID or null",
+        "branchEntryCount": "Native branch entries count or null; bodies excluded",
+        "errorKind": "compaction.error/cancelled or null; error prose excluded",
+        "usage": "Usage: input/output/cacheRead/cacheWrite/cacheWrite1h/reasoning/totalTokens are token counts (1h/reasoning are subsets, never additive again); costInput/costOutput/costCacheRead/costCacheWrite/costTotal are catalog-estimated USD, not bills. Unknown is null; observations.reported/missing are counts and knownSubtotal retains the known partial amount."
+      }
+    },
+    "pi.session.bind": {
+      "kind": "point",
+      "fields": {
+        "sessionId": "Native session ID this bind observes (unitless)",
+        "previousSessionId": "Session ID previously bound in this process, or null on the first bind",
+        "reason": "Native session_start reason (startup/reload/new/resume/fork) or null",
+        "runLinked": "Whether this bind opened a new run file linked to the previous run, or continued the current run"
+      }
+    },
+    "pi.skill.read": {
+      "kind": "point",
+      "fields": {
+        "name": "Skill name from the expansion block, or the owning directory name for a tool path",
+        "path": "Skill file path as observed (text); the file content is never stored",
+        "source": "command (persisted /skill: expansion block body) or tool (tool_result input.path, including nested calls)",
+        "range": "Observed {offset, limit} subset when partially read; null when the whole text was returned",
+        "bytes": "Bytes hashed (count)",
+        "content_sha256": "SHA-256 of the exact bytes observed: the persisted block body (command) or the returned text (tool). Content itself is never stored.",
+        "complete": "Whether the hashed bytes were the whole file; false when truncated or partial. Failed or blocked reads emit no point.",
+        "parentToolCallId": "Enclosing native call ID for nested tool paths, else null"
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "tool": "proof-second",
+  "events": {
+    "proofsecond.note": {
+      "kind": "point",
+      "fields": {
+        "where": "Lifecycle boundary that emitted the note (text)"
+      }
+    },
+    "proofsecond.outer": {
+      "kind": "span",
+      "fields": {
+        "where": "Lifecycle boundary that opened the outer proof span (text)"
+      }
+    },
+    "proofsecond.inner": {
+      "kind": "span",
+      "fields": {
+        "where": "Nesting marker for the inner proof span (text)"
+      }
+    }
+  }
+}

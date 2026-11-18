@@ -1,0 +1,47 @@
+{
+  "name": "flattrace-pi",
+  "version": "0.1.2",
+  "description": "Generic Pi recorder: full flattrace tracing for any Pi session, extensible with your own event vocabulary and detectors",
+  "author": "Mario Hawat <4396100+kyraneth@users.noreply.github.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kyraneth/flattrace-pi"
+  },
+  "homepage": "https://flattrace.com",
+  "bugs": {
+    "url": "https://github.com/kyraneth/flattrace-pi/issues"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./lib/index.mjs"
+  },
+  "files": [
+    "extensions/",
+    "lib/",
+    "vocabularies/",
+    "flattrace-events.json",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "pi": {
+    "extensions": [
+      "./extensions/flattrace-pi.js"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": ">=1.4.0 <2"
+  },
+  "dependencies": {
+    "flattrace": "0.3.1"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "keywords": [
+    "pi-package",
+    "tracing",
+    "flattrace"
+  ]
+}
